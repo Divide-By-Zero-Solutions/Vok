@@ -103,5 +103,11 @@
         <member name="T:Vok.Infrastructure.Services.VoiceSettings">
             <summary>Persists voice provider credentials and preferences.</summary>
         </member>
+        <member name="T:Vok.Infrastructure.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
     </members>
 </doc>

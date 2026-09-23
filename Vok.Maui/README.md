@@ -2,6 +2,13 @@
 
 `Vok.Maui` is the Windows-focused .NET MAUI host and Blazor UI for Vok.
 
+## Platform targets
+
+- **Android:** `net10.0-android`, minimum API 30.
+- **Windows:** `net10.0-windows10.0.19041.0`.
+
+Android metadata is defined in `Platforms/Android/AndroidManifest.xml`. The manifest declares network, microphone, coarse/fine location, and notification permissions. Android still requires runtime approval for microphone and location; features should remain usable when optional permissions are denied.
+
 ## UI areas
 
 - `/` — AAC tile selection, sentence construction, AI suggestions, and speech.
