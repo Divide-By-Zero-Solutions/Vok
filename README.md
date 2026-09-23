@@ -1,6 +1,76 @@
 # Vok
 
-Vok is a Windows-focused AAC application built with .NET MAUI, Blazor, and a service-oriented domain/infrastructure layer.
+**Helping people who cannot communicate, communicate more effectively.**
+
+<p align="center">
+  <img src="docs/images/feature-vision.svg" alt="Vok feature vision" width="640">
+  <br>
+  <em>The Vok feature vision — one core, many voices.</em>
+</p>
+
+Vok is a Windows-focused AAC (augmentative and alternative communication)
+application that helps people who cannot reliably speak get their thoughts
+across quickly, naturally, and independently — built with .NET MAUI, Blazor,
+and a service-oriented domain/infrastructure layer.
+
+<p align="center">
+  <img src="docs/images/mission-journey.svg" alt="From intent to independence" width="640">
+  <em>From intent to independence.</em>
+</p>
+
+## What Vok aims to do
+
+- Give people who cannot comfortably or reliably speak a **better way to be understood**.
+- Adapt to **diverse input methods**: switch access, eye gaze, symbols, touch, or any assistive device.
+- Make expressing thoughts **faster and less effortful** than longhand alternatives.
+- Keep the **person's own intent and personality** front and center.
+
+## How it helps
+
+- **More independence** — say it yourself instead of relying on someone to interpret.
+- **Faster connection** — express wants, needs, ideas, and feelings in the moment.
+- **Less frustration** — fewer failed attempts to be understood.
+- **Real relationships** — better communication means stronger connections with family, friends, carers, and clinicians.
+
+## Feature vision
+
+Vok is engineered to widen the mission as far as it can go:
+
+- **Expressive communication** — your own banked/cloned voice, symbols, emotion markers, and one-tap sentences.
+- **Input for every body** — touch, switches, eye gaze, head tracking, sip-and-puff.
+- **Understanding the person** — adaptive vocabulary and layouts that become *their* voice.
+- **Beyond the screen** — partner transcripts, translation, environmental actions, emergency phrases.
+- **Independence at every step** — offline-first, affordable hardware, collaborative configuration.
+
+See [Features](wiki/Features.md) for the full vision.
+
+## MVP
+
+Vok's MVP proves one thing: **a person who cannot reliably speak gets a real
+thought out, on their own, in under a minute.** Scope, success criteria, and
+rationale are on the [MVP page](wiki/MVP.md).
+
+## Timeline (milestones)
+
+The roadmap is tracked as GitHub Milestones on the Issues page and detailed on
+the [Timeline & Milestones](wiki/Timeline-&-Milestones.md) wiki page:
+**Listen → A First Voice → In Their Hands → Beyond the Screen → v1.0.**
+
+## Issues & tasks
+
+All bugs, features, and internal tasks are tracked via
+[GitHub Issues](https://github.com/Divide-By-Zero-Solutions/Vok/issues) using the checked-in templates
+([bug](.github/ISSUE_TEMPLATE/bug_report.md),
+[feature](.github/ISSUE_TEMPLATE/feature_request.md),
+[task](.github/ISSUE_TEMPLATE/task.md)).
+
+## Wiki
+
+- [Home](wiki/Home.md)
+- [Features](wiki/Features.md)
+- [MVP](wiki/MVP.md)
+- [Timeline & Milestones](wiki/Timeline-&-Milestones.md)
+- [Design & Diagrams](wiki/Design-&-Diagrams.md)
 
 ## Documentation
 
