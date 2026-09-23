@@ -3,6 +3,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Executes HTTP requests against the configured cloud AI provider.</summary>
 public class CloudAiService {
     private readonly HttpClient _http;
     private readonly IAiSettings _settings;

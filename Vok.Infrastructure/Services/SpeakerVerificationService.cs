@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Enrolls and verifies voice samples using local voice-print comparison.</summary>
 public class SpeakerVerificationService : ISpeakerVerificationService {
     private float[]? _patientVoicePrint;
 

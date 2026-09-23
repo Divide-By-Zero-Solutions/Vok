@@ -3,6 +3,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides HTTP-backed neural voice generation.</summary>
 public class NeuralVoiceService : IVoiceService {
     private readonly HttpClient _http;
     private readonly string _piperEndpoint = "http://localhost:10200"; // Standard Piper TTS port

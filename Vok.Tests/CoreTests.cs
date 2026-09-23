@@ -7,6 +7,7 @@ using System.IO;
 
 namespace Vok.Tests;
 
+/// <summary>Verifies SQLite vocabulary persistence and cleanup behavior.</summary>
 public class VocabularyIntegrationTests : IDisposable {
     private readonly string _testDbPath;
     private readonly SqliteVocabularyService _vocab;
@@ -47,6 +48,7 @@ public class VocabularyIntegrationTests : IDisposable {
     }
 }
 
+/// <summary>Verifies AI provider fallback behavior.</summary>
 public class AiRouterTests {
     [Fact]
     public async Task RouteRequest_ShouldFallbackToLocalOnCloudError() {
@@ -67,6 +69,7 @@ public class AiRouterTests {
     }
 }
 
+/// <summary>Verifies voice provider failover behavior.</summary>
 public class VoiceOrchestratorTests {
     [Fact]
     public async Task Speak_ShouldFailoverToNativeWhenCloudFails() {
@@ -85,6 +88,7 @@ public class VoiceOrchestratorTests {
     }
 }
 
+/// <summary>Verifies local vector memory search behavior.</summary>
 public class VectorStoreTests {
     [Fact]
     public async Task MemorySearch_ShouldReturnMostSimilar() {
@@ -101,6 +105,7 @@ public class VectorStoreTests {
     }
 }
 
+/// <summary>Verifies switch scanning selection behavior.</summary>
 public class SwitchScanningTests {
     [Fact]
     public void Scanner_ShouldCycleIndicesCorrectly() {

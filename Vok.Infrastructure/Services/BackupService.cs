@@ -4,11 +4,13 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Exports and imports vocabulary backups.</summary>
 public interface IBackupService {
     Task ExportBackupAsync(string filePath);
     Task ImportBackupAsync(string filePath);
 }
 
+/// <summary>Serializes vocabulary data to and from JSON backup files.</summary>
 public class BackupService : IBackupService {
     private readonly IVocabularyService _vocab;
 

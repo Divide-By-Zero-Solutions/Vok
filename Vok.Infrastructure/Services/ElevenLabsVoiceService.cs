@@ -3,6 +3,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Generates speech through the ElevenLabs HTTP API.</summary>
 public class ElevenLabsVoiceService : IVoiceService {
     private readonly HttpClient _http;
     private readonly IVoiceSettings _settings;

@@ -4,6 +4,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Persists AAC categories and tiles in a local SQLite database.</summary>
 public class SqliteVocabularyService : IVocabularyService {
     private SQLiteAsyncConnection _db;
     private List<AacCategory> _cachedCategories = new();

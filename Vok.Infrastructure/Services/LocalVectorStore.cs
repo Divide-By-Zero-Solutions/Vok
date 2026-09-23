@@ -3,6 +3,7 @@ using System.Numerics;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Stores text embeddings locally and performs similarity searches.</summary>
 public class LocalVectorStore : IVectorStore {
     private readonly string _storagePath;
     private List<MemoryEntry> _memories = new();

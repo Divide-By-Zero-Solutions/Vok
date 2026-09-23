@@ -5,6 +5,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides local embedded AI behavior without a remote provider.</summary>
 public class EmbeddedAiService : IAIService {
     private LLamaContext? _context;
     private InteractiveExecutor? _executor;

@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Vok.Tests;
 
+/// <summary>Verifies prediction cache key and lifecycle behavior.</summary>
 public class PredictionCacheServiceTests {
     [Fact]
     public void SetAndGetCache_ShouldBeCaseInsensitive() {
@@ -28,6 +29,7 @@ public class PredictionCacheServiceTests {
     }
 }
 
+/// <summary>Verifies vocabulary backup round trips.</summary>
 public class BackupServiceTests {
     [Fact]
     public async Task ExportAndImportBackup_ShouldRoundTripCategories() {
@@ -51,6 +53,7 @@ public class BackupServiceTests {
     }
 }
 
+/// <summary>Verifies AI settings persistence.</summary>
 public class AiSettingsTests {
     [Fact]
     public void Properties_ShouldReadAndWriteConfigurationValues() {
@@ -69,6 +72,7 @@ public class AiSettingsTests {
     }
 }
 
+/// <summary>Verifies voice settings persistence.</summary>
 public class VoiceSettingsTests {
     [Fact]
     public void Properties_ShouldUseConfiguredValuesAndPersistChanges() {

@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Coordinates capture, verification, vocabulary, notifications, and session state.</summary>
 public class CommunicationOrchestrator : ICommunicationOrchestrator {
     private readonly IVoiceCaptureService _capture;
     private readonly ISpeakerVerificationService _verification;

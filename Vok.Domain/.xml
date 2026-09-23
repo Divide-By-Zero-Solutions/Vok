@@ -1,0 +1,323 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vok.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Vok.Domain.Interfaces.IDownloadService">
+            <summary>Provides discovery and local management of downloadable assets.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IDownloadService.GetAvailableAssetsAsync">
+            <summary>Gets the assets available from the configured source.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IDownloadService.DownloadAssetAsync(System.String,System.Action{System.Double})">
+            <summary>Downloads an asset and reports progress from zero to one.</summary>
+            <param name="assetId">The asset identifier.</param><param name="progressCallback">The progress callback.</param>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IDownloadService.IsAssetDownloaded(System.String)">
+            <summary>Determines whether an asset is already available locally.</summary>
+            <param name="assetId">The asset identifier.</param>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.DownloadableAsset">
+            <summary>Describes a downloadable application asset.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.DownloadableAsset.#ctor(System.String,System.String,System.String,System.String,System.Int64)">
+            <summary>Describes a downloadable application asset.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ScanningMode">
+            <summary>Controls the strategy used to scan selectable tiles.</summary>
+        </member>
+        <member name="F:Vok.Domain.Interfaces.ScanningMode.Sequential">
+            <summary>Visits tiles one at a time.</summary>
+        </member>
+        <member name="F:Vok.Domain.Interfaces.ScanningMode.RowColumn">
+            <summary>Scans rows and then columns.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ISwitchControlService">
+            <summary>Controls switch-access scanning and selection events.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.ISwitchControlService.IsScanningEnabled">
+            <summary>Gets or sets whether scanning is active.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.ISwitchControlService.Mode">
+            <summary>Gets or sets the active scanning mode.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISwitchControlService.StartScanning">
+            <summary>Starts the scanning timer and highlight sequence.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISwitchControlService.StopScanning">
+            <summary>Stops scanning and clears active state.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISwitchControlService.TriggerSelect">
+            <summary>Selects the currently highlighted tile.</summary>
+        </member>
+        <member name="E:Vok.Domain.Interfaces.ISwitchControlService.OnTileSelected">
+            <summary>Raised when scanning selects a tile.</summary>
+        </member>
+        <member name="E:Vok.Domain.Interfaces.ISwitchControlService.OnScanHighlight">
+            <summary>Raised when the highlighted index or row/column changes.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IHardwareFeedbackService">
+            <summary>Provides tactile feedback for interaction outcomes.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IHardwareFeedbackService.TriggerSuccessHaptic">
+            <summary>Signals a successful operation.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IHardwareFeedbackService.TriggerErrorHaptic">
+            <summary>Signals an error.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IHardwareFeedbackService.TriggerWarningHaptic">
+            <summary>Signals a warning.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ILocationService">
+            <summary>Provides location-derived context for adaptive vocabulary.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ILocationService.GetCurrentContextCategoryAsync">
+            <summary>Gets the current context category.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ILocationService.RequestPermissions">
+            <summary>Requests platform location permissions.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IVectorStore">
+            <summary>Stores and searches vectorized communication memories.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVectorStore.AddMemoryAsync(System.String,System.Single[])">
+            <summary>Adds a text and its embedding to the memory store.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVectorStore.QueryMemoriesAsync(System.String,System.Int32)">
+            <summary>Finds the most relevant memories for a query.</summary>
+            <param name="query">The query text.</param><param name="topK">The maximum result count.</param>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ISyncService">
+            <summary>Synchronizes application data with a configured remote service.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISyncService.SyncDataAsync">
+            <summary>Synchronizes local and remote data.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISyncService.ExportToCloudAsync">
+            <summary>Exports local data to the remote service.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISyncService.ImportFromCloudAsync">
+            <summary>Imports remote data into the local store.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.INotificationService">
+            <summary>Displays user notifications through the platform.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.INotificationService.ShowNotificationAsync(System.String,System.String)">
+            <summary>Shows a notification.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.INotificationService.SetNotificationChannel(System.String,System.String,System.String)">
+            <summary>Configures a platform notification channel.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IVoiceCaptureService">
+            <summary>Captures speech and reports recognized text.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVoiceCaptureService.StartListeningAsync(System.Action{System.String})">
+            <summary>Starts listening and invokes the callback when speech is detected.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVoiceCaptureService.StopListeningAsync">
+            <summary>Stops the active listening session.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IVoiceCaptureService.IsListening">
+            <summary>Gets whether speech capture is active.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ISpeakerVerificationService">
+            <summary>Enrolls and verifies the patient's voice.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISpeakerVerificationService.VerifyPatientVoiceAsync(System.Byte[])">
+            <summary>Verifies captured audio against the enrolled voice.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ISpeakerVerificationService.EnrollPatientVoiceAsync(System.Byte[])">
+            <summary>Enrolls captured audio as the patient's voice.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.ICommunicationOrchestrator">
+            <summary>Coordinates communication sessions and patient state.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ICommunicationOrchestrator.BeginChatSessionAsync">
+            <summary>Starts a communication session.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.ICommunicationOrchestrator.EndChatSessionAsync">
+            <summary>Ends the current communication session.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.ICommunicationOrchestrator.IsPatientActive">
+            <summary>Gets whether a patient is currently active.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IVoiceService">
+            <summary>Converts text to spoken output and exposes available voices.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVoiceService.SpeakAsync(System.String,System.Single,System.Single,System.String)">
+            <summary>Speaks text using the requested prosody and emotion.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVoiceService.GetAvailableVoices">
+            <summary>Gets the voices available from the active provider.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IAIService">
+            <summary>Provides language-model predictions and analysis.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAIService.PredictNextWordsAsync(System.String,System.Collections.Generic.List{System.String})">
+            <summary>Predicts likely next words for a phrase and history.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAIService.PolishSentenceAsync(System.Collections.Generic.List{System.String})">
+            <summary>Polishes tokens into a sentence.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAIService.LearnCategoryAsync(System.String,System.Collections.Generic.List{System.String})">
+            <summary>Extracts a learned category from a sentence.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAIService.AnalyzeSentimentAsync(System.String)">
+            <summary>Analyzes the sentiment of text.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAIService.LoadModelAsync(System.String)">
+            <summary>Loads a local model from the supplied path.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IVocabularyService">
+            <summary>Provides access to persistent AAC vocabulary.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IVocabularyService.Categories">
+            <summary>Gets the currently loaded categories.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVocabularyService.GetTiles(System.String)">
+            <summary>Gets tiles for a category key.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVocabularyService.AddLearnedCategoryAsync(Vok.Domain.Models.AacCategory)">
+            <summary>Adds a learned category and persists it.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVocabularyService.AddTileAsync(System.String,Vok.Domain.Models.AacTile)">
+            <summary>Adds a tile to a category and persists it.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVocabularyService.DeleteTileAsync(System.String)">
+            <summary>Deletes a tile by identifier.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IVocabularyService.Save">
+            <summary>Persists pending vocabulary changes.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IPredictionCache">
+            <summary>Caches predictions by normalized phrase.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IPredictionCache.SetCache(System.String,System.Collections.Generic.List{System.String})">
+            <summary>Stores predictions for a phrase.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IPredictionCache.GetCache(System.String)">
+            <summary>Gets cached predictions, or null when absent.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IPredictionCache.Clear">
+            <summary>Clears all cached predictions.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IAiSettings">
+            <summary>Stores AI provider credentials and selection.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IAiSettings.OpenAIKey">
+            <summary>Gets or sets the OpenAI key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IAiSettings.ClaudeKey">
+            <summary>Gets or sets the Claude key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IAiSettings.GoogleKey">
+            <summary>Gets or sets the Google key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IAiSettings.PreferredProvider">
+            <summary>Gets or sets the preferred provider.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IVoiceSettings">
+            <summary>Stores voice provider credentials and preferences.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IVoiceSettings.ElevenLabsApiKey">
+            <summary>Gets or sets the ElevenLabs key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IVoiceSettings.PreferredVoiceId">
+            <summary>Gets or sets the preferred voice identifier.</summary>
+        </member>
+        <member name="P:Vok.Domain.Interfaces.IVoiceSettings.UseCloudVoice">
+            <summary>Gets or sets whether cloud voice is enabled.</summary>
+        </member>
+        <member name="T:Vok.Domain.Interfaces.IAppConfig">
+            <summary>Provides key/value application configuration.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAppConfig.GetValue(System.String,System.String)">
+            <summary>Gets a value or the supplied default when no value exists.</summary>
+        </member>
+        <member name="M:Vok.Domain.Interfaces.IAppConfig.SetValue(System.String,System.String)">
+            <summary>Stores a key/value configuration entry.</summary>
+        </member>
+        <member name="T:Vok.Domain.Models.UserProfile">
+            <summary>Represents user-specific presentation and accessibility preferences.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.UserProfile.Id">
+            <summary>Gets or sets the stable profile identifier.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.UserProfile.Name">
+            <summary>Gets or sets the profile display name.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.UserProfile.Theme">
+            <summary>Gets or sets the selected visual theme.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.UserProfile.FontSize">
+            <summary>Gets or sets the preferred text size.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.UserProfile.HighContrast">
+            <summary>Gets or sets whether high-contrast presentation is enabled.</summary>
+        </member>
+        <member name="T:Vok.Domain.Models.TileType">
+            <summary>Classifies the communication intent of an AAC tile.</summary>
+        </member>
+        <member name="F:Vok.Domain.Models.TileType.Generic">
+            <summary>A general-purpose tile.</summary>
+        </member>
+        <member name="F:Vok.Domain.Models.TileType.Person">
+            <summary>A person or contact tile.</summary>
+        </member>
+        <member name="F:Vok.Domain.Models.TileType.Action">
+            <summary>An action tile.</summary>
+        </member>
+        <member name="F:Vok.Domain.Models.TileType.Emotion">
+            <summary>An emotion tile.</summary>
+        </member>
+        <member name="F:Vok.Domain.Models.TileType.Need">
+            <summary>A need or request tile.</summary>
+        </member>
+        <member name="T:Vok.Domain.Models.AacTile">
+            <summary>Represents one selectable AAC communication tile.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.Id">
+            <summary>Gets or sets the stable tile identifier.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.Label">
+            <summary>Gets or sets the text displayed and spoken for the tile.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.Icon">
+            <summary>Gets or sets the fallback icon displayed for the tile.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.ImagePath">
+            <summary>Gets or sets an optional image path.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.TargetCategory">
+            <summary>Gets or sets the category opened when this tile is selected.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.IsLearned">
+            <summary>Gets or sets whether the tile has been learned by the user.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.IsQuickPhrase">
+            <summary>Gets or sets whether the tile belongs to the quick-phrase set.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.UsageCount">
+            <summary>Gets or sets the number of observed uses.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.Type">
+            <summary>Gets or sets the semantic tile classification.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacTile.ContactInfo">
+            <summary>Gets or sets optional contact metadata for person tiles.</summary>
+        </member>
+        <member name="T:Vok.Domain.Models.AacCategory">
+            <summary>Groups related AAC tiles under a stable category key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacCategory.Key">
+            <summary>Gets or sets the stable category key.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacCategory.DisplayName">
+            <summary>Gets or sets the localized or user-facing category name.</summary>
+        </member>
+        <member name="P:Vok.Domain.Models.AacCategory.Tiles">
+            <summary>Gets or sets the tiles contained in the category.</summary>
+        </member>
+    </members>
+</doc>

@@ -4,6 +4,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Routes AI requests to a remote provider with local fallback behavior.</summary>
 public class AdvancedAiRouter : IAIService {
     private readonly HttpClient _http;
     private readonly IAIService _localAi;

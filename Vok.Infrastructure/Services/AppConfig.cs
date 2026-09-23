@@ -2,12 +2,14 @@ using System.Text.Json;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides persisted application configuration values.</summary>
 public interface IAppConfig {
     string GetValue(string key, string defaultValue = "");
     void SetValue(string key, string value);
     void Save();
 }
 
+/// <summary>Stores application configuration in the MAUI application data directory.</summary>
 public class AppConfig : IAppConfig {
     private readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "config.json");
     private Dictionary<string, string> _settings = new();

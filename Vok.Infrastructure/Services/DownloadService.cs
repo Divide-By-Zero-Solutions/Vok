@@ -3,6 +3,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Downloads and tracks local application assets.</summary>
 public class DownloadService : IDownloadService {
     private readonly HttpClient _http;
     private readonly string _storagePath = FileSystem.AppDataDirectory;

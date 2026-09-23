@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Caches prediction lists by phrase key.</summary>
 public class PredictionCacheService : IPredictionCache {
     private readonly Dictionary<string, List<string>> _cache = new();
 

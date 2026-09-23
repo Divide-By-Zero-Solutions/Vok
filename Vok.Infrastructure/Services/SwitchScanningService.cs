@@ -4,6 +4,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Implements timed switch-access tile scanning and selection.</summary>
 public class SwitchScanningService : ISwitchControlService {
     private readonly IVocabularyService _vocab;
     private System.Timers.Timer _scanTimer;

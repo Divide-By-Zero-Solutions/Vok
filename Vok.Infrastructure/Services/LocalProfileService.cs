@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides profile selection and persistence operations.</summary>
 public interface IProfileService {
     UserProfile CurrentProfile { get; }
     void SetProfile(UserProfile profile);
@@ -11,6 +12,7 @@ public interface IProfileService {
     void CreateProfile(string name);
 }
 
+/// <summary>Persists user profiles as local application data.</summary>
 public class LocalProfileService : IProfileService {
     private readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "profiles.json");
     private List<UserProfile> _profiles = new();

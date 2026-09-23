@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Implements notifications using local platform facilities.</summary>
 public class LocalNotificationService : INotificationService {
     public async Task ShowNotificationAsync(string title, string message) {
         // In a real MAUI app, this uses Plugin.LocalNotification or native APIs

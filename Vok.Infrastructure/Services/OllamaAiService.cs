@@ -4,6 +4,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Uses an Ollama HTTP endpoint for local AI requests.</summary>
 public class OllamaAiService : IAIService {
     private readonly HttpClient _http;
     private readonly string _endpoint = "http://localhost:11434/api/generate";

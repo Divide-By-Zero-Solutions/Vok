@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vok.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:Vok.Infrastructure.Services.AdvancedAiRouter">
+            <summary>Routes AI requests to a remote provider with local fallback behavior.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.AiSettings">
+            <summary>Persists AI provider credentials and the preferred provider.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.IAppConfig">
+            <summary>Provides persisted application configuration values.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.AppConfig">
+            <summary>Stores application configuration in the MAUI application data directory.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.AudioPlayer">
+            <summary>Provides shared audio-file playback operations.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.IBackupService">
+            <summary>Exports and imports vocabulary backups.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.BackupService">
+            <summary>Serializes vocabulary data to and from JSON backup files.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.CloudAiService">
+            <summary>Executes HTTP requests against the configured cloud AI provider.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.CommunicationOrchestrator">
+            <summary>Coordinates capture, verification, vocabulary, notifications, and session state.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.IContextService">
+            <summary>Provides context-derived vocabulary suggestions.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.ContextService">
+            <summary>Provides the current application context category.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.DownloadService">
+            <summary>Downloads and tracks local application assets.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.ElevenLabsVoiceService">
+            <summary>Generates speech through the ElevenLabs HTTP API.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.EmbeddedAiService">
+            <summary>Provides local embedded AI behavior without a remote provider.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.EmbeddedVoiceService">
+            <summary>Provides local embedded voice behavior.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.LocalNotificationService">
+            <summary>Implements notifications using local platform facilities.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.IProfileService">
+            <summary>Provides profile selection and persistence operations.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.LocalProfileService">
+            <summary>Persists user profiles as local application data.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.LocalVectorStore">
+            <summary>Stores text embeddings locally and performs similarity searches.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.LocalVocabularyService">
+            <summary>Provides preference-backed vocabulary persistence.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.MauiHardwareFeedbackService">
+            <summary>Maps feedback outcomes to MAUI device haptics.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.MauiLocationService">
+            <summary>Obtains location context through MAUI platform services.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.MauiVoiceService">
+            <summary>Provides native MAUI text-to-speech behavior.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.NeuralVoiceService">
+            <summary>Provides HTTP-backed neural voice generation.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.OllamaAiService">
+            <summary>Uses an Ollama HTTP endpoint for local AI requests.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.PredictionCacheService">
+            <summary>Caches prediction lists by phrase key.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.SecureSyncService">
+            <summary>Synchronizes application data through a secure HTTP integration.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.SpeakerVerificationService">
+            <summary>Enrolls and verifies voice samples using local voice-print comparison.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.SqliteVocabularyService">
+            <summary>Persists AAC categories and tiles in a local SQLite database.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.SwitchScanningService">
+            <summary>Implements timed switch-access tile scanning and selection.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.VoiceCaptureService">
+            <summary>Captures speech and reports recognized text to the communication flow.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.VoiceOrchestrator">
+            <summary>Selects cloud or local voice output according to persisted settings.</summary>
+        </member>
+        <member name="T:Vok.Infrastructure.Services.VoiceSettings">
+            <summary>Persists voice provider credentials and preferences.</summary>
+        </member>
+    </members>
+</doc>

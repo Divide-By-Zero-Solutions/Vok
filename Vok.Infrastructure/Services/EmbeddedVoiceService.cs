@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides local embedded voice behavior.</summary>
 public class EmbeddedVoiceService : IVoiceService {
     public async Task SpeakAsync(string text, float pitch, float rate, string emotion = "neutral") {
         var finalPitch = pitch;

@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
@@ -63,6 +65,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Set up PowerShell
         shell: pwsh
@@ -83,6 +87,42 @@ jobs:
       - name: Validate README report markers
         shell: pwsh
         run: $readme = Get-Content '.\README.md' -Raw; if (($readme -notmatch '<!-- PERFORMANCE-REPORT:START -->') -or ($readme -notmatch '<!-- PERFORMANCE-REPORT:END -->')) { throw 'README.md is missing performance report markers.' }
+
+  documentation:
+    name: Validate documentation
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+
+      - name: Restore solution
+        run: dotnet restore .\Vok.sln --runtime win-x64
+
+      - name: Build XML documentation
+        run: dotnet build .\Vok.sln --configuration Release --no-restore
+
+      - name: Validate documentation structure
+        shell: pwsh
+        run: .\scripts\Validate-Documentation.ps1
+
+      - name: Upload XML documentation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-documentation
+          path: '**/bin/**/*.xml'
+          if-no-files-found: warn
 
   performance:
     name: Performance benchmark for pull request

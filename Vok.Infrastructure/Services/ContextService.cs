@@ -2,10 +2,12 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides context-derived vocabulary suggestions.</summary>
 public interface IContextService {
     string GetSuggestedCategory();
 }
 
+/// <summary>Provides the current application context category.</summary>
 public class ContextService : IContextService {
     public string GetSuggestedCategory() {
         var hour = DateTime.Now.Hour;

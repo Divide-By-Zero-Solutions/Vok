@@ -3,6 +3,7 @@ using Microsoft.Maui.Devices.Sensors;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Obtains location context through MAUI platform services.</summary>
 public class MauiLocationService : ILocationService {
     public async Task<string> GetCurrentContextCategoryAsync() {
         try {

@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Persists AI provider credentials and the preferred provider.</summary>
 public class AiSettings : IAiSettings {
     private readonly IAppConfig _config;
     public AiSettings(IAppConfig config) => _config = config;

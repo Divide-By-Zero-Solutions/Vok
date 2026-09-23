@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Provides preference-backed vocabulary persistence.</summary>
 public class LocalVocabularyService : IVocabularyService {
     public List<AacCategory> Categories { get; private set; } = new();
 

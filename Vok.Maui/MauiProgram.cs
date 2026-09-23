@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Components.WebView.Maui;
 
 namespace Vok.Maui;
 
+/// <summary>Builds the MAUI application and registers runtime services.</summary>
 public static class MauiProgram {
+    /// <summary>Creates and configures the MAUI application.</summary>
     public static MauiApp CreateMauiApp() {
         var builder = MauiApp.CreateBuilder();
         builder

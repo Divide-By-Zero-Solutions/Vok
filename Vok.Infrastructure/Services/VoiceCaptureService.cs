@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Captures speech and reports recognized text to the communication flow.</summary>
 public class VoiceCaptureService : IVoiceCaptureService {
     private bool _isListening;
     public bool IsListening => _isListening;

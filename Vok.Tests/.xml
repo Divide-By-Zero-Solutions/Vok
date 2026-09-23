@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vok.Tests</name>
+    </assembly>
+    <members>
+        <member name="T:Vok.Tests.VocabularyIntegrationTests">
+            <summary>Verifies SQLite vocabulary persistence and cleanup behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.AiRouterTests">
+            <summary>Verifies AI provider fallback behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.VoiceOrchestratorTests">
+            <summary>Verifies voice provider failover behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.VectorStoreTests">
+            <summary>Verifies local vector memory search behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.SwitchScanningTests">
+            <summary>Verifies switch scanning selection behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.PredictionCacheServiceTests">
+            <summary>Verifies prediction cache key and lifecycle behavior.</summary>
+        </member>
+        <member name="T:Vok.Tests.BackupServiceTests">
+            <summary>Verifies vocabulary backup round trips.</summary>
+        </member>
+        <member name="T:Vok.Tests.AiSettingsTests">
+            <summary>Verifies AI settings persistence.</summary>
+        </member>
+        <member name="T:Vok.Tests.VoiceSettingsTests">
+            <summary>Verifies voice settings persistence.</summary>
+        </member>
+    </members>
+</doc>

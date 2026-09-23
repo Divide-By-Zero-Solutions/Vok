@@ -4,6 +4,7 @@ using Vok.Domain.Models;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Synchronizes application data through a secure HTTP integration.</summary>
 public class SecureSyncService : ISyncService {
     private readonly IVocabularyService _vocab;
     private readonly HttpClient _http;

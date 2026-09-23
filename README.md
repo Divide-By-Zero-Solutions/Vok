@@ -2,6 +2,10 @@
 
 Vok is a Windows-focused AAC application built with .NET MAUI, Blazor, and a service-oriented domain/infrastructure layer.
 
+## Documentation
+
+Start with the [documentation index](docs/README.md). It links the [architecture](docs/architecture.md), [data model and ERD](docs/data-model.md), [UML and Mermaid diagrams](docs/diagrams.md), [coding standards](docs/standards.md), [testing strategy](docs/testing.md), [API contracts](docs/api.md), [performance guide](docs/performance.md), and [deployment guide](docs/deployment.md). Each project also has a local README: [Domain](Vok.Domain/README.md), [Infrastructure](Vok.Infrastructure/README.md), [MAUI](Vok.Maui/README.md), [Tests](Vok.Tests/README.md), and [Performance](performance/README.md).
+
 ## Performance workflow
 
 The dedicated `Vok.Performance` and `Vok.Performance.Integration` projects contain reproducible BenchmarkDotNet scenarios. Run the report generator manually with:

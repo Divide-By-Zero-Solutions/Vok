@@ -2,6 +2,7 @@ using Vok.Domain.Interfaces;
 
 namespace Vok.Infrastructure.Services;
 
+/// <summary>Selects cloud or local voice output according to persisted settings.</summary>
 public class VoiceOrchestrator : IVoiceService {
     private readonly IVoiceService _cloudVoice;
     private readonly IVoiceService _localVoice;
@@ -33,6 +34,7 @@ public class VoiceOrchestrator : IVoiceService {
     }
 }
 
+/// <summary>Persists voice provider credentials and preferences.</summary>
 public class VoiceSettings : IVoiceSettings {
     private readonly IAppConfig _config;
     public VoiceSettings(IAppConfig config) => _config = config;
