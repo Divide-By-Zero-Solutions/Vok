@@ -1,0 +1,43 @@
+@page "/profiles"
+@using Vok.Domain.Interfaces
+@using Vok.Domain.Models
+@using Vok.Infrastructure.Services
+@inject IProfileService ProfileService
+
+<div class="profiles-container">
+    <h1>User Profiles</h1>
+    <p>Select the person using the device to load their personalized voice and vocabulary.</p>
+
+    <div class="profile-grid">
+        @foreach (var profile in ProfileService.GetAllProfiles()) {
+            <div class="profile-card @(profile == ProfileService.CurrentProfile ? "active" : "")" 
+                 @onclick="() => SelectProfile(profile)">
+                <span class="avatar">👤</span>
+                <span class="name">@profile.Name</span>
+                @if(profile == ProfileService.CurrentProfile) {
+                    <span class="badge">Active</span>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="add-profile">
+        <input @bind="newProfileName" placeholder="New User Name..." />
+        <button @onclick="CreateProfile">Create Profile</button>
+    </div>
+</div>
+
+@code {
+    private string newProfileName = "";
+
+    private void SelectProfile(UserProfile profile) {
+        ProfileService.SetProfile(profile);
+    }
+
+    private void CreateProfile() {
+        if(!string.IsNullOrWhiteSpace(newProfileName)) {
+            ProfileService.CreateProfile(newProfileName);
+            newProfileName = "";
+        }
+    }
+}

@@ -1,0 +1,54 @@
+@page "/manage"
+@using Vok.Domain.Models
+@using Vok.Domain.Interfaces
+@inject IVocabularyService VocabularyService
+
+<div class="manage-container">
+    <h1>Vocabulary Manager</h1>
+    
+    <div class="vocab-editor">
+        <h3>Add New Tile</h3>
+        <div class="form-group">
+            <input @bind="newTileLabel" placeholder="Label (e.g. Coffee)" />
+            <input @bind="newTileIcon" placeholder="Icon (e.g. ☕)" />
+            <select @bind="selectedCategory">
+                @foreach (var category in VocabularyService.Categories) {
+                    <option value="@category.Key">@category.DisplayName</option>
+                }
+            </select>
+            <button @onclick="SaveTileAsync">Add Tile</button>
+        </div>
+    </div>
+
+    <div class="tile-list">
+        <h3>Existing Tiles</h3>
+        @foreach (var category in VocabularyService.Categories) {
+            <div class="cat-section">
+                <h4>@category.DisplayName</h4>
+                @foreach (var tile in category.Tiles) {
+                    <div class="manage-tile">
+                        <span>@tile.Icon @tile.Label</span>
+                        <button @onclick="() => DeleteTileAsync(tile.Id)">Delete</button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string newTileLabel = "";
+    private string newTileIcon = "💬";
+    private string selectedCategory = "needs";
+
+    private async Task SaveTileAsync() {
+        await VocabularyService.AddTileAsync(selectedCategory, new AacTile { 
+            Label = newTileLabel, Icon = newTileIcon 
+        });
+        newTileLabel = "";
+    }
+
+    private async Task DeleteTileAsync(string tileId) {
+        await VocabularyService.DeleteTileAsync(tileId);
+    }
+}

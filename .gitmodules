@@ -1,0 +1,3 @@
+[submodule "performance"]
+	path = performance
+	url = https://github.com/bloodchild8906/Vok-Performance.git

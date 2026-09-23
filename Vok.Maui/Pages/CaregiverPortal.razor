@@ -1,0 +1,104 @@
+@page "/caregiver"
+@using Vok.Domain.Models
+@using Vok.Domain.Interfaces
+@using Vok.Infrastructure.Services
+@inject IVocabularyService VocabularyService
+@inject IAIService AiService
+
+<div class="caregiver-container">
+    <h1>Caregiver Portal</h1>
+    <p>Quickly expand the user's vocabulary using AI analysis.</p>
+
+    <div class="quick-add-box">
+        <h3 style="margin-top: 20px;">People & Contacts</h3>
+        <div class="input-group">
+            <input @bind="personName" placeholder="Name (e.g. 'Doctor Smith')" />
+            <input @bind="personContact" placeholder="Contact (e.g. '555-0123')" />
+            <button @onclick="AddPerson">👤 Add Person</button>
+        </div>
+    </div>
+
+    <div class="quick-add-box">
+        <h3 style="margin-top: 20px;">AI-Powered Tile Generation</h3>
+        <div class="input-group">
+            <input @bind="phraseInput" placeholder="Enter a phrase (e.g. 'I want a red apple')" />
+            <button @onclick="GenerateSuggestedTilesAsync">✨ Auto-Generate Tiles</button>
+        </div>
+        @if (suggestedTiles.Any()) {
+            <div class="quick-phrase-bar">
+                @foreach (var suggestedTile in suggestedTiles) {
+                    <button class="qp-chip" @onclick="() => AddSuggestedTileAsync(suggestedTile)">@suggestedTile.Icon @suggestedTile.Label</button>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="analytics-section">
+        <h3>Usage Analytics</h3>
+        <div class="analytics-grid">
+            @foreach(var stat in GetTopTiles()) {
+                <div class="stat-item">
+                    <span class="stat-label">@stat.Label</span>
+                    <span class="stat-count">@stat.UsageCount uses</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="backup-section">
+        <h3>Data Management</h3>
+        <div class="button-group">
+            <button @onclick="ExportBackupAsync">📤 Export Backup</button>
+            <button @onclick="ImportBackupAsync">📥 Import Backup</button>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private string phraseInput = "";
+    private string personName = "";
+    private string personContact = "";
+    private List<AacTile> suggestedTiles = new();
+    [Inject] private IBackupService Backup { get; set; } = default!;
+
+    async Task AddPerson() {
+        if (string.IsNullOrWhiteSpace(personName)) return;
+        await VocabularyService.AddTileAsync("people", new AacTile { 
+            Label = personName, 
+            Icon = "👤", 
+            Type = TileType.Person, 
+            ContactInfo = personContact 
+        });
+        personName = "";
+        personContact = "";
+    }
+
+    private List<AacTile> GetTopTiles() {
+        return VocabularyService.Categories.SelectMany(category => category.Tiles)
+                    .OrderByDescending(t => t.UsageCount)
+                    .Take(5).ToList();
+    }
+
+
+    private async Task ExportBackupAsync() {
+        var path = Path.Combine(FileSystem.AppDataDirectory, "backup.json");
+        await Backup.ExportBackupAsync(path);
+    }
+
+    private async Task ImportBackupAsync() {
+        var path = Path.Combine(FileSystem.AppDataDirectory, "backup.json");
+        await Backup.ImportBackupAsync(path);
+    }
+
+    private async Task AddSuggestedTileAsync(AacTile tile) {
+        await VocabularyService.AddTileAsync("needs", tile);
+        suggestedTiles.Remove(tile);
+    }
+
+    private async Task GenerateSuggestedTilesAsync() {
+        if (string.IsNullOrWhiteSpace(phraseInput)) return;
+        var predictions = await AiService.PredictNextWordsAsync(phraseInput, new List<string>());
+        suggestedTiles = predictions.Select(prediction => new AacTile { Label = prediction, Icon = "✨" }).ToList();
+    }
+}

@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+@inject NavigationManager Nav
+
+<div class="app-layout">
+    <nav class="bottom-nav">
+        <div class="nav-item @(IsCurrentRoute("/") ? "active" : "")" @onclick='() => NavigateTo("/")'>
+            <span class="nav-icon">🔊</span>
+            <span class="nav-label">Speak</span>
+        </div>
+        <div class="nav-item @(IsCurrentRoute("/manage") ? "active" : "")" @onclick='() => NavigateTo("/manage")'>
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Manage</span>
+        </div>
+        <div class="nav-item @(IsCurrentRoute("/settings") ? "active" : "")" @onclick='() => NavigateTo("/settings")'>
+            <span class="nav-icon">🛠️</span>
+            <span class="nav-label">Settings</span>
+        </div>
+    </nav>
+    <main class="content">
+        @Body
+    </main>
+</div>
+
+@code {
+    private bool IsCurrentRoute(string route) => new Uri(Nav.Uri).AbsolutePath.TrimEnd('/') == route.TrimEnd('/');
+
+    private void NavigateTo(string route) => Nav.NavigateTo(route);
+}

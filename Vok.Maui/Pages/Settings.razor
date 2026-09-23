@@ -1,0 +1,90 @@
+@page "/settings"
+@using Vok.Domain.Interfaces
+@using Vok.Domain.Models
+@inject IDownloadService DownloadService
+
+<div class="settings-container">
+    <h1 class="settings-title">System Settings</h1>
+    
+    <div class="settings-group">
+        <h3 class="group-title">Asset Store</h3>
+        <p class="group-subtitle">Download high-performance AI models and neural voices.</p>
+        
+        <div class="asset-list">
+            @foreach (var asset in availableAssets) {
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <span class="asset-name">@asset.Name</span>
+                        <span class="asset-meta">@asset.Category • @(asset.SizeBytes / 1024 / 1024)MB</span>
+                    </div>
+                    
+                    @if (downloadingAssetId == asset.Id) {
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: @(downloadProgress * 100)%"></div>
+                            <span class="progress-text">@((int)(downloadProgress * 100))%</span>
+                        </div>
+                    } else {
+                        <button class="btn-download @(IsAssetDownloaded(asset.Id) ? "downloaded" : "")" 
+                                @onclick="() => DownloadAssetAsync(asset)">
+                            @(IsAssetDownloaded(asset.Id) ? "Installed" : "Download")
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="settings-group">
+        <h3 class="group-title">Hardware Access</h3>
+        <div class="setting-item">
+            <label>Enable Switch Scanning</label>
+            <input type="checkbox" @bind="IsScanningEnabled" @onchange="ToggleScanning" />
+            <p class="hint">Allows navigation using external hardware buttons.</p>
+        </div>
+        <div class="setting-item">
+            <label>Haptic Feedback Strength</label>
+            <input type="range" min="0" max="100" step="10" @bind="hapticStrength" />
+            <span>@hapticStrength%</span>
+        </div>
+    </div>
+    
+    <button class="btn-save" @onclick="SaveSettings">Save All Settings</button>
+</div>
+
+@code {
+    private List<DownloadableAsset> availableAssets = new();
+    private string? downloadingAssetId;
+    private double downloadProgress;
+    private bool IsScanningEnabled { get; set; }
+    private int hapticStrength = 100;
+    [Inject] private ISwitchControlService SwitchControlService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() {
+        availableAssets = (await DownloadService.GetAvailableAssetsAsync()).ToList();
+    }
+
+    private void ToggleScanning() {
+        if (IsScanningEnabled) SwitchControlService.StartScanning();
+        else SwitchControlService.StopScanning();
+    }
+
+    private bool IsAssetDownloaded(string assetId) => DownloadService.IsAssetDownloaded(assetId);
+
+    private async Task DownloadAssetAsync(DownloadableAsset asset) {
+        downloadingAssetId = asset.Id;
+        downloadProgress = 0;
+        try {
+            await DownloadService.DownloadAssetAsync(asset.Id, p => {
+                downloadProgress = p;
+                StateHasChanged();
+            });
+        } catch (Exception) {
+            downloadingAssetId = null;
+        } finally {
+            downloadingAssetId = null;
+            StateHasChanged();
+        }
+    }
+
+    private void SaveSettings() { }
+}

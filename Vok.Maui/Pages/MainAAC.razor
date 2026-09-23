@@ -1,0 +1,139 @@
+@page "/"
+@using Vok.Domain.Models
+@using Vok.Domain.Interfaces
+@inject IVoiceService VoiceService
+@inject IVoiceCaptureService VoiceCaptureService
+@inject IAIService AiService
+@inject IVocabularyService VocabularyService
+
+<div class="app-container">
+    <header>
+        <span class="page-kicker">Vok · communication first</span>
+        <h1 class="page-title">Build your message</h1>
+        <p class="page-subtitle">Choose words, shape your sentence, and let your voice be heard.</p>
+    </header>
+    <div class="config-bar">
+        <div class="ai-mode-selector">
+            <label for="ai-mode">Assistive mode</label>
+            <select id="ai-mode" @bind="selectedAiMode">
+                <option value="embedded">Embedded (Offline)</option>
+                <option value="server">Ollama Server</option>
+            </select>
+            <span class="mode-status">@selectedAiMode</span>
+        </div>
+        <div class="config-group">
+            <label for="pitch">Pitch <strong>@voicePitch.ToString("F1")</strong></label>
+            <input id="pitch" type="range" @bind="voicePitch" min="0.5" max="1.5" step="0.1" />
+        </div>
+        <div class="config-group">
+            <label for="rate">Rate <strong>@voiceRate.ToString("F1")</strong></label>
+            <input id="rate" type="range" @bind="voiceRate" min="0.5" max="1.5" step="0.1" />
+        </div>
+    </div>
+
+    <div class="sentence-container">
+        <div class="smart-suggestions">
+            @foreach (var suggestion in smartSuggestions) {
+                <button class="smart-chip" @onclick="() => AddTileToSentenceAsync(suggestion)">
+                    💡 @suggestion.Label
+                </button>
+            }
+        </div>
+        <div class="quick-phrase-bar">
+            @foreach (var quickPhrase in VocabularyService.Categories.SelectMany(category => category.Tiles).Where(tile => tile.IsQuickPhrase)) {
+                <button class="qp-chip" @onclick="() => AddTileToSentenceAsync(quickPhrase)">@quickPhrase.Icon @quickPhrase.Label</button>
+            }
+        </div>
+        <div class="word-chips">
+            @if (!sentenceTiles.Any()) {
+                <span class="placeholder">Tap tiles to speak...</span>
+            } else {
+                @foreach (var sentenceTile in sentenceTiles) {
+                    <span class="chip">@sentenceTile.Icon @sentenceTile.Label</span>
+                }
+            }
+        </div>
+        <div class="actions">
+            <button class="btn-undo" @onclick="UndoLastTileAsync">Undo</button>
+            <button class="btn-ai" @onclick="PolishSentenceAsync">✨ Polish</button>
+            <button class="btn-clear" @onclick="ClearSentenceAsync">Clear</button>
+            <button class="btn-accept" @onclick="SpeakSentenceAsync">Speak 🔊</button>
+            <button class="btn-record" @onclick="StartVoiceCaptureAsync">🎤 Record</button>
+        </div>
+    </div>
+
+    <div class="main-workspace">
+        <aside class="sidebar">
+            @foreach (var category in VocabularyService.Categories) {
+                <button class="cat-btn @(selectedCategoryKey == category.Key ? "active" : "")" 
+                        @onclick="() => selectedCategoryKey = category.Key">@category.DisplayName</button>
+            }
+        </aside>
+        <main class="grid">
+            @foreach (var tile in VocabularyService.GetTiles(selectedCategoryKey)) {
+                <button class="tile" @onclick="() => AddTileToSentenceAsync(tile)">
+                    @if (!string.IsNullOrEmpty(tile.ImagePath)) {
+                        <img src="@tile.ImagePath" class="tile-img" />
+                    } else {
+                        <span class="icon">@tile.Icon</span>
+                    }
+                    <span class="label">@tile.Label</span>
+                </button>
+            }
+        </main>
+    </div>
+</div>
+
+@code {
+    private float voicePitch = 1.0f;
+    private float voiceRate = 1.0f;
+    private string selectedAiMode = "embedded";
+    private string selectedCategoryKey = "needs";
+    private List<AacTile> sentenceTiles = new();
+    private List<AacTile> smartSuggestions = new();
+
+    private async Task AddTileToSentenceAsync(AacTile tile) {
+        sentenceTiles.Add(tile);
+        await RefreshSmartSuggestionsAsync();
+    }
+
+    private async Task UndoLastTileAsync() {
+        if (sentenceTiles.Any()) sentenceTiles.RemoveAt(sentenceTiles.Count - 1);
+        await RefreshSmartSuggestionsAsync();
+    }
+
+    private async Task ClearSentenceAsync() {
+        sentenceTiles.Clear();
+        await RefreshSmartSuggestionsAsync();
+    }
+
+    private async Task RefreshSmartSuggestionsAsync() {
+        var currentPhrase = string.Join(" ", sentenceTiles.Select(tile => tile.Label));
+        var predictions = await AiService.PredictNextWordsAsync(currentPhrase, new List<string>());
+        smartSuggestions = predictions.Select(prediction => new AacTile { Label = prediction, Icon = "💡", IsLearned = true }).ToList();
+    }
+
+    private async Task PolishSentenceAsync() {
+        var sentenceTokens = sentenceTiles.Select(tile => tile.Label).ToList();
+        var polishedSentence = await AiService.PolishSentenceAsync(sentenceTokens);
+        sentenceTiles = new List<AacTile> { new AacTile { Label = polishedSentence, Icon = "✨" } };
+        await RefreshSmartSuggestionsAsync();
+    }
+
+    private async Task SpeakSentenceAsync() {
+        var sentenceText = string.Join(" ", sentenceTiles.Select(tile => tile.Label));
+        var detectedEmotion = await AiService.AnalyzeSentimentAsync(sentenceText);
+        await VoiceService.SpeakAsync(sentenceText, voicePitch, voiceRate, detectedEmotion);
+        var learnedCategory = await AiService.LearnCategoryAsync(sentenceText, VocabularyService.Categories.Select(category => category.Key).ToList());
+        if (learnedCategory != null) await VocabularyService.AddLearnedCategoryAsync(learnedCategory);
+        sentenceTiles.Clear();
+        await RefreshSmartSuggestionsAsync();
+    }
+
+    private async Task StartVoiceCaptureAsync() {
+        await VoiceCaptureService.StartListeningAsync(async capturedText => {
+            var capturedTile = new AacTile { Label = capturedText, Icon = "🎙️", IsLearned = true };
+            await AddTileToSentenceAsync(capturedTile);
+        });
+    }
+}

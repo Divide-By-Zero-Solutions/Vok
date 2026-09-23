@@ -1,0 +1,172 @@
+name: Build and test
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened, ready_for_review, closed ]
+  workflow_dispatch:
+    inputs:
+      run_performance:
+        description: Run BenchmarkDotNet and update the performance report
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build and test
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+
+      - name: Restore solution
+        run: dotnet restore .\Vok.sln --runtime win-x64
+
+      - name: Build solution
+        run: dotnet build .\Vok.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test .\Vok.Tests\Vok.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
+          if-no-files-found: ignore
+
+  validate-tooling:
+    name: Validate performance tooling
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PowerShell
+        shell: pwsh
+        run: $PSVersionTable
+
+      - name: Validate report script syntax
+        shell: pwsh
+        run: $tokens = $null; $errors = $null; [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path '.\scripts\Update-PerformanceReport.ps1'), [ref]$tokens, [ref]$errors) | Out-Null; if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
+
+      - name: Validate hook installer syntax
+        shell: pwsh
+        run: $tokens = $null; $errors = $null; [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path '.\scripts\Install-GitHooks.ps1'), [ref]$tokens, [ref]$errors) | Out-Null; if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
+
+      - name: Validate performance target syntax
+        shell: pwsh
+        run: $tokens = $null; $errors = $null; [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path '.\scripts\Test-PerformanceTargets.ps1'), [ref]$tokens, [ref]$errors) | Out-Null; if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
+
+      - name: Validate README report markers
+        shell: pwsh
+        run: $readme = Get-Content '.\README.md' -Raw; if (($readme -notmatch '<!-- PERFORMANCE-REPORT:START -->') -or ($readme -notmatch '<!-- PERFORMANCE-REPORT:END -->')) { throw 'README.md is missing performance report markers.' }
+
+  performance:
+    name: Performance benchmark for pull request
+    if: (github.event_name == 'pull_request' && github.event.action != 'closed') || (github.event_name == 'workflow_dispatch' && inputs.run_performance == true)
+    needs: build-and-test
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+
+      - name: Generate performance report
+        shell: pwsh
+        run: .\scripts\Update-PerformanceReport.ps1
+
+      - name: Enforce performance targets
+        shell: pwsh
+        run: .\scripts\Test-PerformanceTargets.ps1
+
+      - name: Upload performance artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: |
+            README.md
+            Vok.Performance\BenchmarkDotNet.Artifacts\results\*
+            Vok.Performance.Integration\BenchmarkDotNet.Artifacts\results\*
+            BenchmarkDotNet.Artifacts\results\*
+
+      - name: Publish report update summary
+        shell: pwsh
+        run: Get-Content '.\README.md' -Raw | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8
+
+  accepted-pull-request:
+    name: Validate accepted pull request
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out merged commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            10.x
+
+      - name: Restore merged solution
+        run: dotnet restore .\Vok.sln --runtime win-x64
+
+      - name: Build merged solution
+        run: dotnet build .\Vok.sln --configuration Release --no-restore
+
+      - name: Test merged solution
+        run: dotnet test .\Vok.Tests\Vok.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=accepted-pull-request.trx"
+
+      - name: Generate merged performance report
+        shell: pwsh
+        run: .\scripts\Update-PerformanceReport.ps1
+
+      - name: Enforce merged performance targets
+        shell: pwsh
+        run: .\scripts\Test-PerformanceTargets.ps1
+
+      - name: Upload accepted pull request artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accepted-pull-request-validation
+          path: |
+            README.md
+            '**/TestResults/*.trx'
+            BenchmarkDotNet.Artifacts\results\*
+          if-no-files-found: ignore
