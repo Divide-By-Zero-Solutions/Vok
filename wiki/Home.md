@@ -32,6 +32,22 @@ work for them.
 - **Beyond the screen** — partner transcripts, translation, and environmental actions.
 - **Designed with users** — built alongside the people who need it and the professionals who support them.
 
+### The core loop
+
+```mermaid
+flowchart LR
+    A["Person's intent"] --> B[Input]
+    B --> C{Vok}
+    C --> D["Message (text + voice)"]
+    D --> E["Communication partner"]
+    E --> F["Connection, action,\nindependence"]
+    F --> A
+```
+
+A person has something to say, uses the input that already works for them,
+Vok turns it into a clear message, someone hears and responds — and that moment
+of connection drives the next one.
+
 See the [full feature vision](https://github.com/Divide-By-Zero-Solutions/Vok/wiki/Features).
 
 ## MVP first

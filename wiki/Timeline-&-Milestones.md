@@ -4,6 +4,21 @@ This page maps the Vok roadmap into GitHub Milestones so the community can follo
 what is coming and when to expect it. It builds toward the
 [full feature vision](https://github.com/Divide-By-Zero-Solutions/Vok/wiki/Features).
 
+```mermaid
+journey
+    title From mission to daily use
+    section Listen
+      Research & concept: 2: Team
+    section A First Voice
+      Prototype: 3: Team, Users
+    section In Their Hands
+      Adaptation & pilot: 4: Users, Clinicians
+    section Beyond the Screen
+      Impact & beta: 5: Community
+    section v1.0
+      Reaching more voices: 5: Everyone
+```
+
 ## Milestone 1 — Listen (Research & Core Concept)
 
 - Speak with potential users, families, and clinicians.

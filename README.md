@@ -70,7 +70,6 @@ All bugs, features, and internal tasks are tracked via
 - [Features](wiki/Features.md)
 - [MVP](wiki/MVP.md)
 - [Timeline & Milestones](wiki/Timeline-&-Milestones.md)
-- [Design & Diagrams](wiki/Design-&-Diagrams.md)
 
 ## Documentation
 

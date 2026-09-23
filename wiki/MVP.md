@@ -51,6 +51,26 @@ flowchart LR
     S --> P["Partner hears & responds ✅"]
 ```
 
+## First message ever
+
+```mermaid
+flowchart TD
+    A[User wants to say something] --> B{Can they reach the device?}
+    B -->|Yes| C[Tap starting symbol]
+    B -->|No| D[Switch / gaze / puff input]
+    C --> E[Pick next symbol]
+    D --> E
+    E --> F{Enough to compose?}
+    F -->|No| E
+    F -->|Yes| G[Tap 'Speak']
+    G --> H[Partner hears the message]
+    H --> I[User & partner connect]
+    I --> J{"Was it easy?\nDid it feel like them?"}
+    J -->|Yes| K[Confidence grows — they use it again]
+    J -->|No| L[Vok learns & adapts the layout]
+    L --> C
+```
+
 ## What we are NOT building yet (on purpose)
 
 - No account/login required to start.
